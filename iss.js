@@ -42,7 +42,7 @@ const fetchMyCoordsByIP = function(ip, callback) {
     }
 
     // Check the body for "success" to be true or false
-    if (body.succuss === false) {
+    if (body.success === false) {
       const msg = `Success status was ${body.success}. Server message says: ${body.message} when fetching for IP ${body.ip}`;
       callback(Error(msg), null);
       return;
