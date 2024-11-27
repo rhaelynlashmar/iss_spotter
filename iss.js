@@ -18,6 +18,12 @@ const fetchMyIP = function(callback) {
       return;
     }
 
+    if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
+      callback(Error(msg), null);
+      return;
+    }
+
     // Needle parses JSON for us, so we can access response.body
     callback(null, response.body.ip) // pass IP to callback
   });
