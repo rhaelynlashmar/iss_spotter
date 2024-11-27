@@ -14,6 +14,7 @@ const fetchMyIP = function(callback) {
   // Make HTTP request using needle
   needle.get(url, (error, response, body) => {
     if (error) {
+      // handle network errors
       callback(error, null); // if error occurs, pass it to the callback
       return;
     }
@@ -31,7 +32,27 @@ const fetchMyIP = function(callback) {
 };
 
 const fetchMyCoordsByIP = function(ip, callback) {
+  const url = `http://ipwho.is/${ip}`;
 
+  needle.get(url, (error, response) => {
+    // handle network errors
+    if (error) {
+      callback(error, null); // Pass network error to callback
+      return;
+    }
+
+    // Check the body for "success" to be true or false
+    const body = response.body
+    if (body.succuss === false) {
+      const msg = `Success status was ${body.success}. Server message says: ${body.message} when fetching for IP ${body.ip}`;
+      callback(Error(msg), null);
+      return;
+    }
+
+    // get latitude and longitude from the response
+    const { latitude, longitude } = response.body;
+    callback (null, { latitude, longitude }); // Pass data to the callback
+  });
 };
 
 module.exports = { fetchMyIP, fetchMyCoordsByIP };
