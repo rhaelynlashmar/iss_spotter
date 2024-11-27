@@ -17,10 +17,11 @@ const fetchMyIP = function(callback) {
       callback(error, null); // if error occurs, pass it to the callback
       return;
     }
+
+    // Needle parses JSON for us, so we can access response.body
+    callback(null, response.body.ip) // pass IP to callback
   });
-
-
-}
+};
 
 module.exports = { fetchMyIP };
 
